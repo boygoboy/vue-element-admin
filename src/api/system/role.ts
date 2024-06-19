@@ -12,8 +12,8 @@ const baseUrl = '/system/role';
 export function getPageList(query: SysRoleQuery, current = 1, size = 20) {
     return request({
         url: `${baseUrl}/search`,
-        method: 'POST',
-        data: {...query, current, size} // 合并对象 {name: xx, current: xxx, size: xx}
+        method: 'GET',
+        params: {...query, current, size} // 合并对象 {name: xx, current: xxx, size: xx}
     });
 }
 

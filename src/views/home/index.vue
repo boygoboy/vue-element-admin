@@ -39,9 +39,9 @@ const state = reactive({
 });
 
 onMounted(() => {
-    loadCategoryData();
-    loadLast30DaysSaleData();
-    loadMemberTop10Data();
+    // loadCategoryData();
+    // loadLast30DaysSaleData();
+    // loadMemberTop10Data();
 });
 
 // 分类销售统计查询

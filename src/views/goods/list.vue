@@ -26,7 +26,7 @@ async function changeStatus(row: GoodsType) {
         const {id, status} = row;
         const newStatus = status == 0 ? 1: 0;
         const {code} = await updateStatus({id, status: newStatus});
-        if (code != 20000) return false; // 阻止切换
+        if (code != 200) return false; // 阻止切换
         notify('状态更新成功！', {type: 'success'});
         return true; // 允许切换
     } catch (error) {

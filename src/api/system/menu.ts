@@ -11,7 +11,7 @@ export function getList(query?: SysMenuQuery) {
     return request({
         url: `${baseUrl}/search`,
         method: 'Get',
-        data: query
+        params: query
     });
 }
 
@@ -33,7 +33,7 @@ export function deleteById(id: string) {
  */
 export function getMenuSelect() {
     return request({
-        url: `${baseUrl}/search`,
+        url: `${baseUrl}/select`,
         method: 'GET'
     });
 }

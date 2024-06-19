@@ -65,7 +65,7 @@ function useForm<T>(params: Params, emit?: any, props?:any) {
                 res = await add(state.formData);
             }
             state.loading = false;// 防止close关闭不了窗口
-            if (res.code !== 20000) return;
+            if (res.code !== 200) return;
             notify('操作成功！', {type: 'success'});
             // 关闭窗口
             close();

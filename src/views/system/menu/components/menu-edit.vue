@@ -11,7 +11,7 @@ const formRef = ref();
 
 // 初始数据
 const initData = {
-  type: "1",
+  type: 1,
   isLink: false,
   sort: 1,
   meta: { hidden: false, cache: true, isBreadcrumd: true },
@@ -100,15 +100,21 @@ async function submitData() {
   try {
     state.loading = true;
     let res: any = {};
+    delete state.formData.children
+    delete state.formData.createTime
+    delete state.formData.updateTime
     if (state.type === "edit") {
       // 修改
       res = await update(state.formData);
     } else {
       // 新增
+      const codes=state.formData.path.split('/')
+      codes.splice(0,1)
+      state.formData.code=codes.join(':')
       res = await add(state.formData);
     }
     state.loading = false;
-    if (res.code !== 20000) return;
+    if (res.code !== 200) return;
     notify("操作成功！", { type: "success" });
     // 关闭窗口
     close();
@@ -159,8 +165,8 @@ function changeIsLink(val: boolean) {
         />
       </el-form-item>
       <el-form-item label="菜单类型" prop="type">
-        <el-radio v-model="formData.type" label="1" border>菜单</el-radio>
-        <el-radio v-model="formData.type" label="2" border>按钮</el-radio>
+        <el-radio v-model="formData.type" :label="1" border>菜单</el-radio>
+        <el-radio v-model="formData.type" :label="2" border>按钮</el-radio>
       </el-form-item>
       <el-form-item
         label="菜单名称"
@@ -189,6 +195,14 @@ function changeIsLink(val: boolean) {
           <el-input
             v-model="formData.path"
             placeholder="请输入路由地址path值"
+            maxlength="200"
+            show-word-limit
+          />
+        </el-form-item>
+          <el-form-item label="组件路径" prop="component">
+          <el-input
+            v-model="formData.component"
+            placeholder="请输入组件路径"
             maxlength="200"
             show-word-limit
           />
