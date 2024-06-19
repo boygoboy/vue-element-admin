@@ -6,6 +6,7 @@ import type { RouteRecordRaw } from 'vue-router';
 export const Key = {
     rememberKey: 'isRemember',
     accessTokenKey: 'accessToken',
+    refreshToken: 'refreshToken',
     userInfoKey: 'userInfo',
 }
 
@@ -14,6 +15,7 @@ export const useAuthStore = defineStore('auth', {
         return {
             rememberData: Local.get(Key.rememberKey),
             accessToken: Session.get(Key.accessTokenKey),
+            refreshToken: Session.get(Key.refreshToken),
             userInfo: Local.get(Key.userInfoKey),
             buttonList: [], // 按钮权限
             menuList: [], // 菜单权限
@@ -33,10 +35,13 @@ export const useAuthStore = defineStore('auth', {
                 login(loginData).then((res: any) => {
                     const {data} = res;
                     // 访问令牌
-                    const { access_token } = data;
+                    const { access_token,refresh_token } = data;
                     this.accessToken = access_token;
+                    this.refreshToken=refresh_token
+
                     // 保存到session
                     Session.set(Key.accessTokenKey, access_token);
+                    Session.set(Key.refreshToken,refresh_token)
                     // 正常响应钩子
                     resolve(res);
                 }).catch((error: Error) => {
@@ -78,6 +83,7 @@ export const useAuthStore = defineStore('auth', {
         // 重置用户状态
         resetUserState() {
             this.accessToken = undefined;
+            this.refreshToken=undefined
             this.userInfo = undefined;
             this.menuList = [];
             this.buttonList = [];
@@ -85,6 +91,7 @@ export const useAuthStore = defineStore('auth', {
             // 移除本地保存的数据
             Session.remove(Key.accessTokenKey);
             Session.remove(Key.userInfoKey);
+            Session.remove(Key.refreshToken)
         }
     }
 });

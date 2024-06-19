@@ -18,6 +18,7 @@ declare interface LoginData {
 declare interface AuthState<T = any> {
     rememberData?: LoginData; // 记住密码数据
     accessToken?: string; // 访问令牌
+    refreshToken?:string;// 刷新token
     userInfo?: UserInfo; // 认证用户信息
     buttonList: string[]; // 按钮权限
     menuList: T[]; // 菜单权限
