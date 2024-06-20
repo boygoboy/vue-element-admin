@@ -1,3 +1,38 @@
+<template>
+    <el-drawer :title="`分配【${role.roleName}】权限`" v-model="visible" :before-close="close" direction="rtl" size="400px" >
+        <div v-loading="loading">
+            <el-tree 
+                ref="treeRef"
+                :data="menuList" 
+                node-key="id"
+                show-checkbox
+                highlight-current
+                :props="{children: 'children'}"
+                :default-expand-all="expandAll"
+            >
+                <template #default="{ node, data }">
+                    <span class="custom-tree-node">
+                        <!-- 一、二级菜单类型显示自定义图标 -->
+                        <SvgIcon v-if="[1, 2].includes(node.level)" :name="data.meta.icon"/>
+                        <!-- 三级菜单显示`菜单`或`按钮`图标 -->
+                        <el-icon v-else>
+                            <ele-Menu v-if="data.type == 1" />
+                            <ele-SwitchButton v-else-if="data.type == 2"/>
+                        </el-icon>
+                        <span class="ml10">{{ data.meta.title }}</span>
+                    </span>
+                </template>
+            </el-tree>
+        </div>
+        <template #footer>
+            <el-button :loading="submitting" @click="submitForm" type="primary">提交</el-button>
+            <el-button @click="handleCheckAll">全选/不选</el-button>
+            <el-button @click="handleExpand">展开/收起</el-button>
+            <el-button @click="close">取消</el-button>
+        </template>
+    </el-drawer>
+</template>
+
 <script setup lang="ts">
 import { getList } from '@/api/system/menu';
 import { getMenuIdsByRoleId, saveRoleMenu } from '@/api/system/role';
@@ -140,7 +175,7 @@ async function submitForm() {
         // console.log('parentIds', parentIds);
         // 合并所有上面获取的菜单ids
         const menuIds = parentIds.concat(checkedMenuIds);
-        await saveRoleMenu(state.role.id, menuIds);
+        await saveRoleMenu(state.role.id, {permissionIds:menuIds});
         notify('分配权限成功!', {type: 'success'});
         state.submitting = false; // 防止关闭不了窗口
         // 关闭弹窗
@@ -152,42 +187,6 @@ async function submitForm() {
 }
 
 </script>
-
-<template>
-    <el-drawer :title="`分配【${role.roleName}】权限`" v-model="visible" :before-close="close" direction="rtl" size="400px" >
-        <div v-loading="loading">
-            <el-tree 
-                ref="treeRef"
-                :data="menuList" 
-                node-key="id"
-                show-checkbox
-                highlight-current
-                :props="{children: 'children'}"
-                :default-expand-all="expandAll"
-            >
-                <template #default="{ node, data }">
-                    <span class="custom-tree-node">
-                        <!-- 一、二级菜单类型显示自定义图标 -->
-                        <SvgIcon v-if="[1, 2].includes(node.level)" :name="data.meta.icon"/>
-                        <!-- 三级菜单显示`菜单`或`按钮`图标 -->
-                        <el-icon v-else>
-                            <ele-Menu v-if="data.type == 1" />
-                            <ele-SwitchButton v-else-if="data.type == 2"/>
-                        </el-icon>
-                        <span class="ml10">{{ data.meta.title }}</span>
-                    </span>
-                </template>
-            </el-tree>
-        </div>
-        <template #footer>
-            <el-button :loading="submitting" @click="submitForm" type="primary">提交</el-button>
-            <el-button @click="handleCheckAll">全选/不选</el-button>
-            <el-button @click="handleExpand">展开/收起</el-button>
-            <el-button @click="close">取消</el-button>
-        </template>
-    </el-drawer>
-</template>
-
 <style lang="scss" scoped>
 .custom-tree-node {
     font-size: 14px;
