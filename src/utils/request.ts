@@ -1,9 +1,9 @@
 import axios from 'axios';
-import type { AxiosInstance ,AxiosRequestConfig} from 'axios';
-import {HttpStatus} from '@/utils/types/index';
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { HttpStatus } from '@/utils/types/index';
 import { ElMessage } from 'element-plus';
-import { useAuthStore,Key } from '@/stores/auth';
-import {refreshTokenApi} from '@/api/auth'
+import { useAuthStore, Key } from '@/stores/auth';
+import { refreshTokenApi } from '@/api/auth'
 import { Session } from '@/utils/storage';
 
 /**
@@ -24,7 +24,7 @@ request.interceptors.request.use((config) => {
     //console.log('请求拦截器', config);
     // 发送请求前在请求头加上token令牌
     const authStore = useAuthStore();
-    const accessToken = authStore.accessToken;
+    const accessToken = authStore.accessToken || Session.get(Key.accessTokenKey);
     if (accessToken) {
         // oauth2 请求头带上令牌  Authorization: Bearer xxx
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -43,12 +43,12 @@ request.interceptors.request.use((config) => {
         "data": xxx
     }
  */
-    interface PendingTask {
-        config: AxiosRequestConfig
-        resolve: Function
-      }
-    let refreshing = false;
-    const queue: PendingTask[] = [];
+interface PendingTask {
+    config: AxiosRequestConfig
+    resolve: Function
+}
+let refreshing = false;
+let queue: PendingTask[] = [];
 request.interceptors.response.use(response => {
     //console.log('响应拦截器', response);
     const { data } = response;
@@ -60,67 +60,104 @@ request.interceptors.response.use(response => {
     ElMessage.error(data.message);
     return Promise.reject(response); // 进入调用方catch部分
 }, async (error) => {
-    const {response} = error;
+    const { response } = error;
     let { config } = response;
-    if(refreshing){
-     return new Promise((resolve) => {
-        queue.push({
-            config,
-            resolve
+
+    if (refreshing) {
+        return new Promise((resolve) => {
+            queue.push({
+                config,
+                resolve
+            });
         });
-    });
     }
 
     if (response.status === 401 && !config.url.includes('/user/refresh')) {
-        refreshing = true;
-        const isSuccess= await refreshTokenFunc()
-        refreshing = false;
-        if(isSuccess) {
-          queue.forEach(({config, resolve}) => {
-              resolve(axios(config))
-          })
-          return axios(config);
-        } else {
-            setTimeout(()=>{
-
-            },3000)
-          return Promise.reject(new Error('登录失效，将在3秒后跳转到登录页'));
+        if (!refreshing) {
+            refreshing = true;
+            refreshTokenFunc().then(isSuccess => {
+                refreshing = false;
+                if (isSuccess) {
+                    // 令牌刷新成功，获取新的accessToken
+                    const authStore = useAuthStore();
+                    const accessToken = authStore.accessToken || Session.get(Key.accessTokenKey);
+                    queue.forEach(({ config, resolve }) => {
+                        if (accessToken) {
+                            // oauth2 请求头带上令牌  Authorization: Bearer xxx
+                            config.headers!.Authorization = `Bearer ${accessToken}`;
+                        }
+                        axios(config)
+                            .then(response => {
+                                resolve(response.data);  // 这里解析出data并通过resolve返回
+                            })
+                            .catch(error => {
+                                // 可以在这里处理错误或直接传递错误
+                                resolve(Promise.reject(error.response));
+                            });
+                    });
+                    queue = [];  // 清空队列
+                }
+            }).catch(() => {
+                ElMessage.error('登录失效，3s后将自动跳转到登录页');
+                setTimeout(() => {
+                    const authStore = useAuthStore();
+                    authStore.resetUserState();
+                    window.location.reload();
+                }, 3000);
+                queue = [];  // 清空队列
+            });
         }
+        // 将首次失败的请求也推入队列中等待处理
+        return new Promise((resolve) => {
+            queue.push({
+                config,
+                resolve: (retryPromise: any) => resolve(retryPromise),
+            });
+        });
     } else {
-        const {status}=error.response
-        if(status==HttpStatus.NOT_FOUND){
+        const { status } = error.response
+        if (status == HttpStatus.NOT_FOUND) {
             ElMessage.error('请求的资源不存在');
         }
         //网络超时
-        if(status==HttpStatus.REQUEST_TIMEOUT){
+        if (status == HttpStatus.REQUEST_TIMEOUT) {
             ElMessage.error('网络超时');
         }
-        if(status==HttpStatus.INTERNAL_SERVER_ERROR){
+        if (status == HttpStatus.INTERNAL_SERVER_ERROR) {
             ElMessage.error('服务器错误');
         }
-        if(status==HttpStatus.BAD_REQUEST){
+        if (status == HttpStatus.BAD_REQUEST) {
             ElMessage.error('请求参数错误');
         }
         //   return error.response;
         // 出现异常，则捕获处理（下面是交给调用处的catch)
-        return Promise.reject(error.response);
+        return Promise.reject(error.response.data);
     }
 });
 
-async function refreshTokenFunc() {
-   try{
-    const authStore = useAuthStore();
-    const refreshToken = authStore.refreshToken||Session.get(Key.refreshToken);
-    const query:RefreshToken = {
-        refreshToken
-    }
-    const res = await refreshTokenApi(query);
-    localStorage.setItem('access_token', res.data.access_token || '');
-    localStorage.setItem('refresh_token', res.data.refresh_token || '');
-    return true
-   }catch(error){
-     return false
-   }
+function refreshTokenFunc() {
+    return new Promise((resolve, reject) => {
+        const authStore = useAuthStore();
+        const refreshToken = authStore.refreshToken || Session.get(Key.refreshToken);
+        const accessToken = authStore.accessToken || Session.get(Key.accessTokenKey);
+        const query: RefreshToken = {
+            refreshToken
+        }
+        axios({
+            url: `${import.meta.env.VITE_APP_BASE_API}/auth/refreshtoken`,
+            method: 'get',
+            params: query,
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then((res) => {
+            Session.set(Key.accessTokenKey, res.data.data.access_token || '');
+            authStore.accessToken = res.data.data.access_token || '';
+            resolve(true)
+        }).catch(error => {
+            reject(false)
+        });
+    })
 }
 
 // 导出axios实例

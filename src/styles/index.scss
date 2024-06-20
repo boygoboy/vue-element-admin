@@ -1,9 +1,11 @@
 // elementplus全局样式
 @import 'element-plus/dist/index.css';
 // 自定义样式放到下面，如果有相同样式会覆盖elementplus原样式
+@import './reset.scss';
 @import './app.scss';
 // 动画过渡效果样式
 @import './transition.scss';
 // 暗黑主题: element-plus-css变量
 @import 'element-plus/theme-chalk/dark/css-vars.css';
 @import './dark.scss';
+@import './elementplus.scss'

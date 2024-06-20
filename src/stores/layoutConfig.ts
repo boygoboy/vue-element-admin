@@ -8,7 +8,7 @@ export const useLayoutConfigStore = defineStore('layoutConfig', {
             // 是否折叠起菜单：true折叠，false展开
             isCollapse: false,
             // 网站主标题
-            globalTitle: '梦学谷-Vue3全家桶项目',
+            globalTitle: 'vue-element-admin',
             isFullscreen: false, // 是否全屏状态：true是
             isDrak: false, // 是否暗黑主题：true是
         }

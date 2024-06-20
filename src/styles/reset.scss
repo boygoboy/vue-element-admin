@@ -1,0 +1,118 @@
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-color: currentcolor;
+  border-style: solid;
+  border-width: 0;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  line-height: 1.5;
+  tab-size: 4;
+  text-size-adjust: 100%;
+}
+
+/* 重置滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border: 1px solid rgba(184, 187, 193, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-family: "SourceHanSansSC, SourceHanSansSC", "Helvetica Neue", Helvetica, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+  line-height: inherit;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+img,
+svg {
+  display: inline-block;
+}
+
+svg {
+  // 因icon大小被设置为和字体大小一致，而span等标签的下边缘会和字体的基线对齐，故需设置一个往下的偏移比例，来纠正视觉上的未对齐效果
+  vertical-align: -0.15em;
+}
+
+body,
+button,
+dd,
+dl,
+dt,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+input,
+li,
+ol,
+p,
+pre,
+td,
+textarea,
+th,
+ul {
+  padding: 0;
+  margin: 0;
+}
+
+img {
+  vertical-align: top;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+a,
+a:focus,
+a:hover {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:focus,
+a:active,
+div:focus {
+  outline: none;
+}

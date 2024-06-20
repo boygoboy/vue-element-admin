@@ -9,6 +9,7 @@ import ElementPlus from 'element-plus';
 // @ts-ignore 忽略ts检查
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs';
 import { useElIcon } from '@/utils/setGlobal';
+import '@/assets/iconfont/iconfont.js';
 // 导入全局样式
 import '@/styles/index.scss';
 

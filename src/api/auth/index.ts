@@ -15,7 +15,7 @@ export function login (data: LoginData) {
 
 // 刷新接口
 export function refreshTokenApi (query:RefreshToken):any{
-       request({
+      return request({
         url:`${baseUrl}/refreshtoken`,
         method:'get',
         params:query

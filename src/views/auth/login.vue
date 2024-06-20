@@ -1,3 +1,58 @@
+<template>
+  <div class="login-container">
+    <div class="login-wrap">
+      <div class="title-box">
+        <img class="lagin-logo" src="@/assets/login-logo.png" />
+        <span>vue-element-admin</span>
+      </div>
+      <div class="login-title">帐号登录</div>
+      <el-form class="login-form" ref="formRef" :model="loginData" size="large">
+        <el-form-item
+          prop="username"
+          :rules="{ required: true, validator: checkUsername, trigger: 'blur' }"
+        >
+          <el-input
+            v-model="loginData.username"
+            placeholder="请输入帐号/手机号"
+            maxlength="30"
+            prefix-icon="ele-User"
+            clearable
+          />
+        </el-form-item>
+        <el-form-item
+          prop="password"
+          :rules="{ required: true, validator: checkPassword, trigger: 'blur' }"
+        >
+          <el-input
+            v-model="loginData.password"
+            type="password"
+            placeholder="请输入密码"
+            maxlength="30"
+            prefix-icon="ele-Unlock"
+            show-password
+            clearable
+          />
+        </el-form-item>
+        <el-form-item>
+          <div class="login-other">
+            <el-checkbox v-model="isRemember">
+              <span>记住密码</span>
+            </el-checkbox>
+          </div>
+          <el-button
+            class="login-submit"
+            @click="submitForm()"
+            :loading="loading"
+            type="primary"
+          >
+            登 录
+          </el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
 import { isUsername, isPassword } from "@/utils/validate";
@@ -69,58 +124,6 @@ function submitForm() {
 }
 </script>
 
-<template>
-  <div class="login-container">
-    <div class="login-wrap">
-      <img class="lagin-logo" src="@/assets/login-logo.png" />
-      <div class="login-title">帐号登录</div>
-      <el-form class="login-form" ref="formRef" :model="loginData" size="large">
-        <el-form-item
-          prop="username"
-          :rules="{ required: true, validator: checkUsername, trigger: 'blur' }"
-        >
-          <el-input
-            v-model="loginData.username"
-            placeholder="请输入帐号/手机号"
-            maxlength="30"
-            prefix-icon="ele-User"
-            clearable
-          />
-        </el-form-item>
-        <el-form-item
-          prop="password"
-          :rules="{ required: true, validator: checkPassword, trigger: 'blur' }"
-        >
-          <el-input
-            v-model="loginData.password"
-            type="password"
-            placeholder="请输入密码"
-            maxlength="30"
-            prefix-icon="ele-Unlock"
-            show-password
-            clearable
-          />
-        </el-form-item>
-        <el-form-item>
-          <div class="login-other">
-            <el-checkbox v-model="isRemember">
-              <span>记住密码</span>
-            </el-checkbox>
-          </div>
-          <el-button
-            class="login-submit"
-            @click="submitForm()"
-            :loading="loading"
-            type="primary"
-          >
-            登 录
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </div>
-  </div>
-</template>
-
 <style lang="scss" scoped>
 .login-container {
   height: 100%;
@@ -140,10 +143,15 @@ function submitForm() {
     margin-right: 130px;
     box-shadow: #74747462 0 2px 15px;
     border-radius: 10px;
-    .lagin-logo {
-      max-width: 130px;
-      margin: auto;
+    .title-box {
       display: flex;
+      align-items: center;
+      justify-content: center;
+      .lagin-logo {
+        width: 35px;
+        display: flex;
+        margin-right: 15px;
+      }
     }
     .login-title {
       font-size: 20px;

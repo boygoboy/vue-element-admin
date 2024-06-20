@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { h, resolveComponent } from 'vue';
+import { h, resolveComponent } from "vue";
 /**
 // h() 是 hyperscript 的简称——意思是“能生成 HTML (超文本标记语言) 的 JavaScript”
 // 定义一个渲染函数，参数2为props
@@ -18,34 +18,35 @@ const render4 = () => h(resolveComponent('el-icon'),
         () => h(resolveComponent('ele-Plus')) );
  */
 
-const props = withDefaults(defineProps<{
+const props = withDefaults(
+  defineProps<{
     name?: string; // 图标名称 `ele-` 开头为elementplus图标
-    color?: string, // 图标颜色
-    size?: number | string, // 图标大小
-}>(), {
-    name: '',
+    color?: string; // 图标颜色
+    size?: number | string; // 图标大小
+  }>(),
+  {
+    name: "",
     size: 18,
-});
+  }
+);
 
 const render = () => {
-    if (props.name?.startsWith('ele-')) {
-        //<el-icon color='xxx' size='xxx'><ele-xxx></el-icon>
-        return h(
-            resolveComponent('el-icon'), 
-            {color: props.color, size: props.size}, 
-            () => h(resolveComponent(props.name))
-        );
-    } else {
-        return h('i'); // <i></i>
-    }
+  if (props.name?.startsWith("ele-")) {
+    //<el-icon color='xxx' size='xxx'><ele-xxx></el-icon>
+    return h(
+      resolveComponent("el-icon"),
+      { color: props.color, size: props.size },
+      () => h(resolveComponent(props.name))
+    );
+  } else {
+    return h("i"); // <i></i>
+  }
 };
 </script>
 
 <template>
-    <!-- 使用元素方式引用渲染对象 -->
-   <render />
+  <!-- 使用元素方式引用渲染对象 -->
+  <render />
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
