@@ -13,7 +13,7 @@ export function getPageList(query: SysUserQuery, current = 1, size = 20) {
     return request({
         url: `${baseUrl}/search`,
         method: 'GET',
-        params: {...query, current, size} // 合并对象 {name: xx, current: xxx, size: xx}
+        params: { ...query, current, size } // 合并对象 {name: xx, current: xxx, size: xx}
     });
 }
 
@@ -60,7 +60,7 @@ export function update(data: SysUserType) {
  * @param params 接收{username: xxx} 或者 {mobile: xxxx}
  * @returns 
  */
-export function checkExist(params: {username: string} | {mobile: string}) {
+export function checkExist(params: { username: string } | { mobile: string } | { email: string }) {
     return request({
         url: `${baseUrl}/exist`,
         method: 'GET',
@@ -74,6 +74,15 @@ export function checkExist(params: {username: string} | {mobile: string}) {
 export function updatePassword(data: PwdResetForm) {
     return request({
         url: `${baseUrl}/password`,
+        method: 'PUT',
+        data
+    })
+}
+
+// 更改用户状态
+export function changeStatus(data: UserStatus) {
+    return request({
+        url: `${baseUrl}/status`,
         method: 'PUT',
         data
     })

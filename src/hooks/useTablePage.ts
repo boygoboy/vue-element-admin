@@ -24,7 +24,7 @@ function useTablePage<T = any, Q = any>(params: Params, emit?: Function, props?:
         loading: false,
         page: {
             current: 1, // 当前页码
-            size: 20, // 每页显示多少条
+            size: 10, // 每页显示多少条
             total: 0, // 总记录数
         } as PageType,
         query: {} as Q,
@@ -45,12 +45,12 @@ function useTablePage<T = any, Q = any>(params: Params, emit?: Function, props?:
         return new Promise((resolve, reject) => {
             state.loading = true;
             // 调用接口
-            const {current, size} = state.page;
+            const { current, size } = state.page;
             // 合并必须传递的查询条件
             const query = params.mustQuery ? Object.assign({}, state.query, params.mustQuery) : state.query;
             params.getPageList(query, current, size).then((resp: any) => {
                 // state.loading = false;
-                const {total, records} = resp.data;
+                const { total, records } = resp.data;
                 state.tableList = []; // 清空
                 nextTick(() => {
                     // 总记录数
@@ -60,7 +60,7 @@ function useTablePage<T = any, Q = any>(params: Params, emit?: Function, props?:
                 });
                 // 正常响应
                 resolve(resp);
-            }).catch((error:Error) => {
+            }).catch((error: Error) => {
                 // 异常情况
                 reject(error);
             }).finally(() => {
@@ -76,12 +76,21 @@ function useTablePage<T = any, Q = any>(params: Params, emit?: Function, props?:
         queryData();
     }
 
+    //重置
+    function reset() {
+        state.page.current = 1;
+        state.page.size = 10;
+        state.page.total = 0;
+        (state.query as Q) = {} as Q;
+        queryData()
+    }
+
     // 点击删除
     async function handleDelete(id: string) {
         try {
             state.loading = true;
-            if(params.deleteById) await params.deleteById(id);
-            notify('删除成功！', {type: 'success'});
+            if (params.deleteById) await params.deleteById(id);
+            notify('删除成功！', { type: 'success' });
             queryData();
         } catch (error) {
         } finally {
@@ -108,9 +117,10 @@ function useTablePage<T = any, Q = any>(params: Params, emit?: Function, props?:
         handleDelete,
         handleEdit,
         handleAdd,
+        reset
     }
 
 }
 
 export default useTablePage;
-export {useTablePage};
+export { useTablePage };

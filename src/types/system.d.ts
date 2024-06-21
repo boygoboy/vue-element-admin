@@ -63,13 +63,17 @@ declare interface SysUserType {
     mobile: string;
     roleIds: string[];
     email: string;
+    password?: string;
     imageUrl: string;
     remark: string;
-    accountNonExpired: boolean;  // 帐号是否过期(true 未过期，false已过期) 生成 true 或 false 概率都是 1/2
-    accountNonLocked: boolean; // 帐户是否被锁定(true 未锁定，false已锁定)
-    credentialsNonExpired: boolean; // 密码是否过期(true  未过期，false已过期)
+    accountStatus: boolean;  // 帐号是否过期(true 未过期，false已过期) 生成 true 或 false 概率都是 1/2
     createTime: string;
     updateTime: string;
+}
+
+declare interface UserStatus {
+    userId: number;
+    accountStatus: boolean;
 }
 
 /**

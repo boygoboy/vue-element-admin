@@ -115,7 +115,7 @@ request.interceptors.response.use(response => {
             });
         });
     } else {
-        const { status } = error.response
+        const { status, data } = error.response
         if (status == HttpStatus.NOT_FOUND) {
             ElMessage.error('请求的资源不存在');
         }
@@ -127,7 +127,7 @@ request.interceptors.response.use(response => {
             ElMessage.error('服务器错误');
         }
         if (status == HttpStatus.BAD_REQUEST) {
-            ElMessage.error('请求参数错误');
+            ElMessage.error(data.data);
         }
         //   return error.response;
         // 出现异常，则捕获处理（下面是交给调用处的catch)
