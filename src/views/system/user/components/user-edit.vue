@@ -139,23 +139,7 @@
             />
           </el-form-item>
         </el-col>
-        <el-col :span="12">
-          <el-form-item
-            label="帐号锁定"
-            prop="accountStatus"
-            :rules="{
-              required: true,
-              message: '帐号锁定为必选项！',
-              trigger: 'change',
-            }"
-          >
-            <el-radio-group v-model="formData.accountStatus">
-              <el-radio :label="true" border>未锁定</el-radio>
-              <el-radio :label="false" border>已锁定</el-radio>
-            </el-radio-group>
-          </el-form-item>
-        </el-col>
-        <el-col :span="title == '新增' ? 12 : 24">
+        <el-col :span="title == '新增' ? 24 : 12">
           <el-form-item label="备注" prop="remark">
             <el-input
               v-model="formData.remark"

@@ -44,4 +44,8 @@ defineProps<{
 }>();
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-sub-menu {
+  display: grid;
+}
+</style>
