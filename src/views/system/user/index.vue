@@ -184,6 +184,7 @@ async function changeUserStatus(row: SysUserType) {
     await changeStatus(data);
     msg("更改用户状态成功", { type: "success" });
   } catch (error) {
+    handleQuery()
   } finally {
     isLoading.value = false;
   }
