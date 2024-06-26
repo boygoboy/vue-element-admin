@@ -62,6 +62,7 @@
       <el-table-column align="center" label="帐号启用" width="120">
         <template #default="{ row }">
           <el-switch
+            v-auth="'system:user:edit'"
             v-model="row.accountStatus"
             :loading="isLoading"
             inline-prompt
@@ -184,7 +185,7 @@ async function changeUserStatus(row: SysUserType) {
     await changeStatus(data);
     msg("更改用户状态成功", { type: "success" });
   } catch (error) {
-    handleQuery()
+    handleQuery();
   } finally {
     isLoading.value = false;
   }
