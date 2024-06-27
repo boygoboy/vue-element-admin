@@ -38,11 +38,17 @@
       <el-table-column align="center" type="index" label="序号" width="60" />
       <el-table-column align="center" prop="roleName" label="角色名称" />
       <el-table-column align="center" prop="roleCode" label="角色编码" />
-      <el-table-column align="center" prop="status" label="角色状态">
+      <el-table-column align="center" prop="status" label="角色启用">
         <template #default="{ row }">
-          <el-tag :type="row.status ? 'success' : 'warning'">{{
-            row.status ? "启用" : "停用"
-          }}</el-tag>
+          <el-switch
+            v-auth="'system:role:edit'"
+            v-model="row.status"
+            inline-prompt
+            active-text="启"
+            inactive-text="停"
+            :loading="loading"
+            @change="changeRoleStatus(row)"
+          />
         </template>
       </el-table-column>
       <el-table-column align="center" prop="remark" label="备注" />
@@ -75,6 +81,7 @@
                 icon="ele-Delete"
                 type="danger"
                 link
+                :disabled="row.roleCode == 'super_role'"
                 >删除</el-button
               >
             </template>
@@ -95,7 +102,7 @@
 </template>
 
 <script setup lang="ts" name="SystemRole">
-import { getPageList, deleteById } from "@/api/system/role";
+import { getPageList, deleteById, updateStatus } from "@/api/system/role";
 import { notify } from "@/utils/element";
 import {
   ref,
@@ -183,6 +190,25 @@ async function handleDelete(id: string) {
     notify("删除成功！", { type: "success" });
     queryData();
   } catch (error) {
+  } finally {
+    state.loading = false;
+  }
+}
+
+// 更改角色状态
+async function changeRoleStatus(row: SysRoleType) {
+  try {
+    state.loading = true;
+    const data: RoleStatus = {
+      id: Number(row.id),
+      status: row.status as boolean,
+    };
+    // 调用接口
+    await updateStatus(data);
+    notify("更改角色状态成功！", { type: "success" });
+    queryData();
+  } catch (error) {
+    queryData();
   } finally {
     state.loading = false;
   }

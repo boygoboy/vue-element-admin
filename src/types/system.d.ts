@@ -42,10 +42,10 @@ declare interface SysRoleType {
     id: string;
     roleName: string;
     roleCode: string;
-    status: boolean;
+    status?: boolean;
     remark: string;
-    updateTime: string;
-    createTime: string;
+    updateTime?: string;
+    createTime?: string;
 }
 
 
@@ -74,6 +74,11 @@ declare interface SysUserType {
 declare interface UserStatus {
     userId: number;
     accountStatus: boolean;
+}
+
+declare interface RoleStatus {
+    id: number;
+    status: boolean;
 }
 
 /**

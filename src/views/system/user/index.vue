@@ -66,8 +66,8 @@
             v-model="row.accountStatus"
             :loading="isLoading"
             inline-prompt
-            active-text="是"
-            inactive-text="否"
+            active-text="启"
+            inactive-text="停"
             @change="changeUserStatus(row)"
           ></el-switch>
         </template>
@@ -109,6 +109,7 @@
           >
             <template #reference>
               <el-button
+                :disabled="row.username == 'back_admin'"
                 v-auth="'system:user:delete'"
                 icon="ele-Delete"
                 type="danger"

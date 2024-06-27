@@ -51,22 +51,6 @@
           show-word-limit
         />
       </el-form-item>
-      <el-form-item
-        label="角色状态"
-        prop="status"
-        :rules="{
-          required: true,
-          message: '角色状态为必选项！',
-          trigger: 'change',
-        }"
-      >
-        <el-switch
-          v-model="formData.status"
-          inline-prompt
-          active-text="启"
-          inactive-text="停"
-        />
-      </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input
           v-model="formData.remark"
@@ -135,7 +119,7 @@ function close() {
 
 // 提交表单
 function submitForm() {
-  formRef.value?.validate((valid) => {
+  formRef.value?.validate((valid: boolean) => {
     if (!valid) return;
     submitData();
   });
@@ -148,6 +132,7 @@ async function submitData() {
     let res = {};
     delete state.formData.createTime;
     delete state.formData.updateTime;
+    delete state.formData.status;
     if (state.type === "edit") {
       // 修改
       res = await update(state.formData);

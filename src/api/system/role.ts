@@ -13,7 +13,7 @@ export function getPageList(query: SysRoleQuery, current = 1, size = 20) {
     return request({
         url: `${baseUrl}/search`,
         method: 'GET',
-        params: {...query, current, size} // 合并对象 {name: xx, current: xxx, size: xx}
+        params: { ...query, current, size } // 合并对象 {name: xx, current: xxx, size: xx}
     });
 }
 
@@ -47,6 +47,14 @@ export function add(data: SysRoleType) {
 export function update(data: SysRoleType) {
     return request({
         url: `${baseUrl}`,
+        method: 'PUT',
+        data
+    });
+}
+
+export function updateStatus(data: RoleStatus) {
+    return request({
+        url: `${baseUrl}/status`,
         method: 'PUT',
         data
     });
