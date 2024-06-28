@@ -129,7 +129,7 @@ function submitForm() {
 async function submitData() {
   try {
     state.loading = true;
-    let res = {};
+    let res: any = {};
     delete state.formData.createTime;
     delete state.formData.updateTime;
     delete state.formData.status;
