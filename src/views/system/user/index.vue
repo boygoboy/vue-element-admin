@@ -15,6 +15,7 @@
         <el-button @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-divider />
     <div class="action-box">
       <el-button
         v-auth="'system:user:add'"
@@ -198,5 +199,9 @@ async function changeUserStatus(row: SysUserType) {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+:deep(.el-divider--horizontal){
+  margin-top: 7px !important;
+  margin-bottom: 20px !important;
 }
 </style>

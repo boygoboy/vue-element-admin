@@ -13,6 +13,7 @@
         <el-button @click="reset">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-divider />
     <div class="action-box">
       <el-button
         v-auth="'system:menu:add'"
@@ -209,5 +210,9 @@ function handleEdit(row: SysMenuType) {
   display: flex;
   align-items: center;
   margin: 0 0 20px 0;
+}
+:deep(.el-divider--horizontal){
+  margin-top: 7px !important;
+  margin-bottom: 20px !important;
 }
 </style>

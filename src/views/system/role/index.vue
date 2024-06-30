@@ -16,6 +16,7 @@
         <el-button @click="reset" :loading="loading">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-divider />
     <div class="action-box">
       <el-button
         v-auth="'system:role:add'"
@@ -239,5 +240,9 @@ function handlePermission(role: SysRoleType) {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+}
+:deep(.el-divider--horizontal){
+  margin-top: 7px !important;
+  margin-bottom: 20px !important;
 }
 </style>
