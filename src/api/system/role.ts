@@ -80,7 +80,7 @@ export function getMenuIdsByRoleId(roleId: string) {
 export function saveRoleMenu(roleId: string, menuIds: string[]) {
     return request({
         url: `/system/role/${roleId}/menu/ids`,
-        method: 'POST',
+        method: 'PUT',
         data: menuIds
     });
 }

@@ -24,7 +24,7 @@
     </div>
 </template>
 
-<script setup lang="ts" name="SystemEmail">
+<script setup lang="ts" name="EmailConfig">
 import {ref,defineAsyncComponent,computed} from "vue";
 import { useLayoutConfigStore } from '@/stores/layoutConfig';
 

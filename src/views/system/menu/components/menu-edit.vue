@@ -47,7 +47,7 @@
         />
       </el-form-item>
       <template v-if="formData.type == '2'">
-        <el-form-item label="权限标识" prop="code">
+        <el-form-item label="权限标识" prop="code"   :rules="{ required: true, message: '请输入权限标识', trigger: 'blur' }">
           <el-input
             v-model="formData.code"
             placeholder="请输入权限标识"
@@ -57,7 +57,15 @@
         </el-form-item>
       </template>
       <template v-else>
-        <el-form-item label="路由地址" prop="path">
+        <el-form-item label="权限标识" prop="code"   :rules="{ required: true, message: '请输入权限标识', trigger: 'blur' }">
+          <el-input
+            v-model="formData.code"
+            placeholder="请输入权限标识"
+            maxlength="50"
+            show-word-limit
+          />
+        </el-form-item>
+        <el-form-item label="路由地址" prop="path"   :rules="{ required: true, message: '请输入路由地址', trigger: 'blur' }" >
           <el-input
             v-model="formData.path"
             placeholder="请输入路由地址path值"
@@ -73,7 +81,7 @@
             show-word-limit
           />
         </el-form-item>
-        <el-form-item label="路由名称" prop="name">
+        <el-form-item label="路由名称" prop="name"   :rules="{ required: true, message: '请输入路由名称', trigger: 'blur' }" >
           <el-input
             v-model="formData.name"
             placeholder="请输入路由名称相对路径"
@@ -298,9 +306,11 @@ async function submitData() {
       res = await update(state.formData);
     } else {
       // 新增
-      const codes=state.formData.path.split('/')
+      if(!state.formData.code){
+        const codes=state.formData.path.split('/')
       codes.splice(0,1)
       state.formData.code=codes.join(':')
+      }
       res = await add(state.formData);
     }
     state.loading = false;

@@ -27,9 +27,9 @@ declare interface SysMenuType {
     };
     sort: number;
     remark: string;
-    createTime: string;
-    updateTime: string;
-    children: SysMenuType[];
+    createTime?: string;
+    updateTime?: string;
+    children?: SysMenuType[];
 }
 
 // 角色查询条件

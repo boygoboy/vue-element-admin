@@ -110,7 +110,7 @@
           >
             <template #reference>
               <el-button
-                :disabled="row.username == 'back_admin'"
+                :disabled="row.username == 'back_admin'||row.accountStatus == true"
                 v-auth="'system:user:delete'"
                 icon="ele-Delete"
                 type="danger"
