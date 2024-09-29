@@ -1,5 +1,5 @@
 export interface EmailConfig {
-    id: string;
+    id?: string;
     emailTitle: string;
     emailName: string;
     smtpHost:string;
@@ -7,5 +7,6 @@ export interface EmailConfig {
     enableSsl: boolean;
     userName: string;
     password: string;
-    hidePwd: boolean;
+    hidePwd?: boolean;
+    messageContent?: string;
 }

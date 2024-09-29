@@ -1,5 +1,52 @@
 :root{
-    --el-color-primary:#505bd2 !important;
-    --el-color-primary-light-5:#505bd2 !important;
-    --el-color-primary-light-3:#505bd2 !important;
+    --el-color-primary:#7840ec !important;
+    --el-color-primary-light-5:#7840ec !important;
+    --el-color-primary-light-3:#7840ec !important;
+}
+
+.el-button.is-text{
+    padding: 15px 0px !important;
+}
+.el-button--primay.is-text{
+    color: #7840ec !important;
+}
+.el-button.is-text:focus{
+    background-color: #f5f7fa !important;
+}
+
+.el-dialog__header{
+    height: 55px;
+    line-height: 55px;
+    background: var(--el-color-primary) !important;
+    padding:  0px !important;
+    margin: -16px !important;
+    padding-left: 15px !important;
+    width: calc(100% + 32px) !important;
+}
+.el-dialog__title{
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    color: #fff !important;
+}
+.el-dialog__body{
+    padding-bottom: 0px !important;
+    padding-top: 36px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.el-dialog__footer{
+    text-align: center !important;
+}
+.el-dialog__headerbtn .el-dialog__close{
+    color: #fff !important;
+}
+.el-menu-item.is-active{
+    background-color: #5d34b6 !important;
+}
+.el-menu-item:hover{
+    background-color: #5d34b6 !important;
+    color: #ffffff !important;
+}
+.el-select .el-select__tags-text{
+    color:#606266 !important;
 }

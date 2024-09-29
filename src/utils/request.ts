@@ -3,7 +3,6 @@ import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { HttpStatus } from '@/utils/types/index';
 import { ElMessage } from 'element-plus';
 import { useAuthStore, Key } from '@/stores/auth';
-import { refreshTokenApi } from '@/api/auth'
 import { Session } from '@/utils/storage';
 
 /**

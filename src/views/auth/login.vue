@@ -102,7 +102,7 @@ function checkPassword(rule: any, value: string, callback: Function) {
 
 // 提交登录
 function submitForm() {
-  formRef.value.validate(async (valid) => {
+  formRef.value.validate(async (valid:boolean) => {
     if (!valid) return;
     try {
       // 登录中

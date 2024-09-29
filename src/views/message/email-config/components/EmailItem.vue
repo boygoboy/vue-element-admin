@@ -3,8 +3,6 @@
         <el-card
       shadow="hover"
       class="card"
-      v-for="(item, index) in emailItem"
-      :key="index"
     >
       <template #header>
         <div class="header-title">
@@ -52,14 +50,18 @@
         </div>
         <div class="action-btn">
           <el-button type="primary" link 
+          @click="handleEdit(emailItem.id!)"
+          :loading="isLoading"
             >smtp配置</el-button
           >
           <el-divider direction="vertical" />
           <el-button type="success" link 
+          @click="handleSendEmail(emailItem)"
             >测试邮件</el-button
           >
           <el-divider direction="vertical" />
-          <el-button type="danger" link 
+          <el-button type="danger" link :loading="isLoading"
+          @click="handleDelete(emailItem.id!)"
             >删除</el-button
           >
         </div>
@@ -69,7 +71,11 @@
 </template>
 
 <script setup lang="ts">
+import {defineEmits,ref} from 'vue'
 import type {EmailConfig} from '../types'
+import {getEmailConfigDetail,deleteEmailConfig} from '@/api/message/email-config'
+import { notify } from "@/utils/element";
+import { ElMessageBox } from "element-plus";
 const props = withDefaults(defineProps<{
     emailItem:EmailConfig
 }>(), {
@@ -86,11 +92,56 @@ const props = withDefaults(defineProps<{
     })
 });
 
+const isLoading=ref(false)
+
+const emits=defineEmits(['updateEmail','sendEmail','refreshList'])
+
+async function handleEdit(id:string){
+    try{
+        isLoading.value=true
+        // do something
+        const {data}=await getEmailConfigDetail(id)
+        emits('updateEmail',data)
+    }catch(error){
+
+    }finally{
+        isLoading.value=false
+    }
+}
+
+function handleSendEmail(emailItem:EmailConfig){
+    // do something
+    console.log(emailItem)
+    emits('sendEmail',emailItem)
+}
+
+function handleDelete(id:string){
+    // do something
+    ElMessageBox.confirm("此操作会删除该邮箱配置, 是否继续?", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    console.log(id)
+    try{
+        isLoading.value=true
+        await deleteEmailConfig(id)
+        notify("删除成功！", { type: "success" });
+        emits('refreshList')
+    }catch(error){
+
+    }finally{
+        isLoading.value=false
+    }
+  });
+}
+
 </script>
 
 <style lang="scss" scoped>
-  .card {
-    width: 30%;
+.com-box{
+    width: 33%;
+    .card {
     margin-right: 20px;
     margin-bottom: 20px;
     min-width: 300px;
@@ -104,7 +155,7 @@ const props = withDefaults(defineProps<{
     }
     &::v-deep .el-card__header {
       padding: 12px 12px;
-      background: #1c0054;
+      background: var(--el-color-primary);
     }
     .content {
       display: flex;
@@ -132,4 +183,14 @@ const props = withDefaults(defineProps<{
       }
     }
   }
+}
+</style>
+<style scoped>
+.mail-icon {
+  font-size: 60px;
+}
+.eye-icon {
+  font-size: 18px;
+  cursor: pointer;
+}
 </style>

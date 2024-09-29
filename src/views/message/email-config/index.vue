@@ -13,26 +13,164 @@
             </div>
             <div class="action-btn">
                 <el-button
+                    @click="addEmail"
                     icon="ele-Plus"
                     type="primary">新建</el-button>
             </div>
         </div>
         <el-divider />
         <div class="email-box">
-            <email-item></email-item>
+            <email-item :emailItem="item" v-for="(item,index) in emailList" 
+            @updateEmail="handleUpdateEmail"
+            @sendEmail="handleSendEmail"
+            @refreshList="refreshEmailConfigList"
+            :key="index"></email-item>
         </div>
+        <update-email v-model="emailDialogVisible" ref="updateEmailRef" :dialogTitle="dialogTitle"
+        @refreshList="refreshEmailConfigList"
+        ></update-email>
+        <email-test :emailConfig="emailConfig!" v-model="emailTestDailogVisible"></email-test>
     </div>
 </template>
 
 <script setup lang="ts" name="EmailConfig">
-import { ref, defineAsyncComponent, computed } from "vue"
+import { ref, computed ,nextTick,onMounted} from "vue"
 import { useLayoutConfigStore } from '@/stores/layoutConfig'
+import EmailItem from './components/EmailItem.vue'
+import UpdateEmail from './components/UpdateEmail.vue'
+import EmailTest from './components/EmailTest.vue'
+import {getEmailConfigList} from '@/api/message/email-config'
+import type {EmailConfig} from './types'
+
+const emailList = ref<EmailConfig[]>([
+    {
+     id:'',
+    emailTitle:'gmail邮箱',
+    emailName: 'cwj16030301@gmail.com',
+    smtpHost:'cwj16030301@gmail.com',
+    smtpPort: 456,
+    enableSsl:true,
+    userName: 'admin',
+    password: '123456',
+    hidePwd: true, 
+    },
+    {
+     id:'',
+    emailTitle:'gmail邮箱',
+    emailName: 'cwj16030301@gmail.com',
+    smtpHost:'cwj16030301@gmail.com',
+    smtpPort: 456,
+    enableSsl:true,
+    userName: 'admin',
+    password: '123456',
+    hidePwd: true, 
+    },
+    {
+     id:'',
+    emailTitle:'gmail邮箱',
+    emailName: 'cwj16030301@gmail.com',
+    smtpHost:'cwj16030301@gmail.com',
+    smtpPort: 456,
+    enableSsl:true,
+    userName: 'admin',
+    password: '123456',
+    hidePwd: true, 
+    },
+    {
+     id:'',
+    emailTitle:'gmail邮箱',
+    emailName: 'cwj16030301@gmail.com',
+    smtpHost:'cwj16030301@gmail.com',
+    smtpPort: 456,
+    enableSsl:true,
+    userName: 'admin',
+    password: '123456',
+    hidePwd: true, 
+    },
+    {
+     id:'',
+    emailTitle:'gmail邮箱',
+    emailName: 'cwj16030301@gmail.com',
+    smtpHost:'cwj16030301@gmail.com',
+    smtpPort: 456,
+    enableSsl:true,
+    userName: 'admin',
+    password: '123456',
+    hidePwd: true, 
+    },
+    {
+     id:'',
+    emailTitle:'gmail邮箱',
+    emailName: 'cwj16030301@gmail.com',
+    smtpHost:'cwj16030301@gmail.com',
+    smtpPort: 456,
+    enableSsl:true,
+    userName: 'admin',
+    password: '123456',
+    hidePwd: true, 
+    },
+    {
+     id:'',
+    emailTitle:'gmail邮箱',
+    emailName: 'cwj16030301@gmail.com',
+    smtpHost:'cwj16030301@gmail.com',
+    smtpPort: 456,
+    enableSsl:true,
+    userName: 'admin',
+    password: '123456',
+    hidePwd: true, 
+    }
+])
+
+const emailDialogVisible = ref(false)
+const emailTestDailogVisible=ref(false)
+
+const updateEmailRef=ref()
+const emailConfig=ref<EmailConfig>()
 
 const layoutConfig = useLayoutConfigStore()
-const EmailItem = defineAsyncComponent(
-    () => import("@/system/email/components/EmailItem.vue")
-)
 const fontColor = computed(() => layoutConfig.isDrak ? '#cfd3dc' : '#333')
+
+const dialogTitle=ref('创建邮箱配置')
+function addEmail(){
+    emailDialogVisible.value = true
+    dialogTitle.value='创建邮箱配置'
+}
+
+function handleUpdateEmail(data:EmailConfig){
+    emailDialogVisible.value = true
+    dialogTitle.value='编辑邮箱配置'
+    nextTick(()=>{
+        updateEmailRef.value?.handleEditForm(data)
+    })
+}
+
+function handleSendEmail(data:EmailConfig){
+    console.log(data)
+    emailTestDailogVisible.value=true
+    emailConfig.value=data
+}
+
+async function getEmailConfigListApi(){
+    try{
+       const {data} = await getEmailConfigList()
+         emailList.value=data
+    }catch(error){
+
+    }finally{
+
+    }
+}
+
+function refreshEmailConfigList(){
+    console.log('refreshEmailConfigList')
+    getEmailConfigListApi()
+}
+
+
+onMounted(()=>{
+    getEmailConfigListApi()
+})
 </script>
 
 <style scoped lang="scss">
@@ -63,6 +201,12 @@ const fontColor = computed(() => layoutConfig.isDrak ? '#cfd3dc' : '#333')
         }
 
         .action-btn {}
+    }
+    .email-box{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        overflow-y: scroll;
     }
 }
 </style>
