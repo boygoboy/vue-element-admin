@@ -64,7 +64,22 @@
                         value="Websocket"></el-option>
                 </el-select>
             </el-form-item>
-
+            <el-form-item
+                label="通知邮箱"
+                prop="email"
+                :rules="[{
+                    required: true,
+                    message: '通知邮箱为必填项！',
+                    trigger: 'blur',
+                }]">
+                <el-input
+                    v-model="formData.email"
+                    placeholder="请输入通知邮箱"
+                    maxlength="20"
+                    show-word-limit
+                    clearable />
+            </el-form-item>
+                       
             <el-form-item
                 label="模板内容"
                 prop="templateContent"
