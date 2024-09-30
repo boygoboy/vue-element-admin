@@ -13,7 +13,7 @@ export function getEmailConfigDetail(id:string) {
 export function sendEmailApi(query:EmailConfig&{email:string}) {
     return request({
         url: `${baseUrl}/emailtest`,
-        method: 'Get',
+        method: 'GET',
         params: query
     });
 }

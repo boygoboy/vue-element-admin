@@ -65,42 +65,79 @@
                 </el-select>
             </el-form-item>
             <el-form-item
+            v-if="formData.way==='Email'"
                 label="通知邮箱"
                 prop="email"
-                :rules="[{
+                :rules="{
                     required: true,
-                    message: '通知邮箱为必填项！',
+                    message: '通知邮箱为必选项！',
                     trigger: 'blur',
-                }]">
+                }">
+                <el-select v-model="formData.email">
+                <el-option v-for="(item,index) in emailOptions" :key="index"
+                :label="item.emailName" :value="item.id"
+                ></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item
+                label="消息模板"
+                prop="templateId"
+                :rules="{
+                    required: true,
+                    message: '消息模板为必选项！',
+                    trigger: 'change',
+                }">
+                <el-select
+                    style="width: 100%;"
+                    v-model="formData.templateId"
+                    clearable
+                    placeholder="请选择消息模板">
+                   <el-option v-for="(item,index) in templateOptions" 
+                    :label="item.templateName"
+                    :value="item.id"
+                   :key="index"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item
+                label="触发频次"
+                prop="cycleCount"
+                :rules="{
+                    required: true,
+                    message: '触发频次为必填项！',
+                    trigger: 'blur',
+                }">
                 <el-input
-                    v-model="formData.email"
-                    placeholder="请输入通知邮箱"
+                    v-model="formData.cycleCount"
+                    placeholder="请输入触发频次"
                     maxlength="20"
                     show-word-limit
                     clearable />
             </el-form-item>
-                       
             <el-form-item
-                label="模板内容"
-                prop="templateContent"
+                label="通知间隔"
+                prop="interval"
                 :rules="{
                     required: true,
-                    message: '模板内容为必填项！',
+                    message: '通知间隔为必填项！',
                     trigger: 'blur',
                 }">
-                    <el-mention
-                    v-model="formData.templateContent"
-                    type="textarea"
-                    :rows="5"
-                    placeholder="请输入模板内容"
-                    :options="formData.tableData"
-                    :prefix="['$']"
-                    whole
-  >
-     <template #label="{ item }">
-        <span style="margin-left: 6px">{{ item.value }}</span>
-    </template>
-</el-mention>
+                <div style="display: flex;width: 100%;">
+                    <el-input
+                    style="width: calc(100% - 120px);margin-right: 15px;"
+                    v-model="formData.interval"
+                    placeholder="请输入通知间隔"
+                    maxlength="20"
+                    show-word-limit
+                    clearable />
+                <el-select v-model="formData.unit" placeholder="请选择周期"
+                style="width: 120px;"
+                >
+                    <el-option label="小时" value="hour"></el-option>
+                    <el-option label="天" value="day"></el-option>
+                    <el-option label="周" value="week"></el-option>
+                    <el-option label="月" value="month"></el-option>
+                </el-select>
+                </div>
             </el-form-item>
         </el-form>
         <el-row justify="center" class="mt10">
@@ -116,8 +153,14 @@ import { addNoticeConfigApi, updateNoticeConfigApi } from "@/api/message/send"
 import { useForm } from "@/hooks/useForm"
 import { ref, watch, computed } from "vue"
 import type { NoticeConfig } from '../types'
+import type {TemplateConfig} from '../../templet/types'
+import type {EmailConfig} from '../../email-config/types'
 
 const emit = defineEmits(["refresh"])
+
+const initData={
+    unit:'hour',
+}
 
 const {
     formRef,
@@ -129,11 +172,14 @@ const {
     open,
     close,
     submitForm,
-} = useForm<NoticeConfig>({ add: addNoticeConfigApi, update: updateNoticeConfigApi}, emit)
+} = useForm<NoticeConfig>({ add: addNoticeConfigApi, update: updateNoticeConfigApi,initData}, emit)
 
 defineExpose({
     open,
 })
+
+const templateOptions=ref<TemplateConfig[]>([])
+const emailOptions=ref<EmailConfig[]>([])
 
 // 修改时禁用
 const disabled = computed(() => type.value === "edit")
@@ -143,21 +189,11 @@ watch(
     () => visible.value,
     (val) => {
         if (!val) return
-
+      
     }
 );
 
 
-function addMeta(){
-    formData.value.tableData.push({
-        value: "",
-        label: "",
-    })
-}
-
-function deleteMeta(index:number){
-    formData.value.tableData.splice(index,1)
-}
 
 </script>
 

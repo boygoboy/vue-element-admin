@@ -2,11 +2,11 @@ import request from '@/utils/request';
 const baseUrl = '/message/send';
 import type {NoticeConfigQuery,NoticeConfig} from '@/views/message/send/types';
 
-export function noticeConfigListApi(query:NoticeConfigQuery) {
+export function noticeConfigListApi(query:NoticeConfigQuery,current=1,size=10){
     return request({
-        url: `${baseUrl}/list`,
+        url: `${baseUrl}/page`,
         method: 'GET',
-        params: query
+        params: {current,size,...query}
     });
 }
 

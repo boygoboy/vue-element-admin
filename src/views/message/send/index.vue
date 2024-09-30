@@ -128,7 +128,7 @@ import { formatTime } from "@/utils/timeFunction"
 import type { NoticeConfigQuery, NoticeConfig } from './types/index'
 
 const UpdateNotice = defineAsyncComponent(
-    () => import("@/views/message/templet/components/UpdateNotice.vue")
+    () => import("@/views/message/send/components/UpdateNotice.vue")
 )
 
 const {

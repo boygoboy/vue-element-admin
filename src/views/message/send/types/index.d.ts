@@ -11,7 +11,7 @@ export interface NoticeConfig{
     email?:string;
     templateId:string;
     templateName:string;
-    cycle:'once'|'cycle';
+    cycleCount:number;
     interval:number;
     unit:'hour'|'day'|'week'|'month';
     createTime?:string;

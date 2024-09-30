@@ -2,11 +2,11 @@ import request from '@/utils/request';
 const baseUrl = '/message/template';
 import type {TemplateQuery,TemplateConfig} from '@/views/message/templet/types';
 
-export function templateListApi(query:TemplateQuery) {
+export function templateListApi(query:TemplateQuery,current=1,size=10){
     return request({
-        url: `${baseUrl}/list`,
+        url: `${baseUrl}/page`,
         method: 'GET',
-        params: query
+        params: {current,size, ...query}
     });
 }
 

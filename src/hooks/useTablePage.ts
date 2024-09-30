@@ -46,6 +46,7 @@ function useTablePage<T = any, Q = any>(params: Params, emit?: Function, props?:
             state.loading = true;
             // 调用接口
             const { current, size } = state.page;
+            debugger
             // 合并必须传递的查询条件
             const query = params.mustQuery ? Object.assign({}, state.query, params.mustQuery) : state.query;
             params.getPageList(query, current, size).then((resp: any) => {
