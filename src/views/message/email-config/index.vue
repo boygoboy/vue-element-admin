@@ -42,85 +42,7 @@ import EmailTest from './components/EmailTest.vue'
 import {getEmailConfigList} from '@/api/message/email-config'
 import type {EmailConfig} from './types'
 
-const emailList = ref<EmailConfig[]>([
-    {
-     id:'',
-    emailTitle:'gmail邮箱',
-    emailName: 'cwj16030301@gmail.com',
-    smtpHost:'cwj16030301@gmail.com',
-    smtpPort: 456,
-    enableSsl:true,
-    userName: 'admin',
-    password: '123456',
-    hidePwd: true, 
-    },
-    {
-     id:'',
-    emailTitle:'gmail邮箱',
-    emailName: 'cwj16030301@gmail.com',
-    smtpHost:'cwj16030301@gmail.com',
-    smtpPort: 456,
-    enableSsl:true,
-    userName: 'admin',
-    password: '123456',
-    hidePwd: true, 
-    },
-    {
-     id:'',
-    emailTitle:'gmail邮箱',
-    emailName: 'cwj16030301@gmail.com',
-    smtpHost:'cwj16030301@gmail.com',
-    smtpPort: 456,
-    enableSsl:true,
-    userName: 'admin',
-    password: '123456',
-    hidePwd: true, 
-    },
-    {
-     id:'',
-    emailTitle:'gmail邮箱',
-    emailName: 'cwj16030301@gmail.com',
-    smtpHost:'cwj16030301@gmail.com',
-    smtpPort: 456,
-    enableSsl:true,
-    userName: 'admin',
-    password: '123456',
-    hidePwd: true, 
-    },
-    {
-     id:'',
-    emailTitle:'gmail邮箱',
-    emailName: 'cwj16030301@gmail.com',
-    smtpHost:'cwj16030301@gmail.com',
-    smtpPort: 456,
-    enableSsl:true,
-    userName: 'admin',
-    password: '123456',
-    hidePwd: true, 
-    },
-    {
-     id:'',
-    emailTitle:'gmail邮箱',
-    emailName: 'cwj16030301@gmail.com',
-    smtpHost:'cwj16030301@gmail.com',
-    smtpPort: 456,
-    enableSsl:true,
-    userName: 'admin',
-    password: '123456',
-    hidePwd: true, 
-    },
-    {
-     id:'',
-    emailTitle:'gmail邮箱',
-    emailName: 'cwj16030301@gmail.com',
-    smtpHost:'cwj16030301@gmail.com',
-    smtpPort: 456,
-    enableSsl:true,
-    userName: 'admin',
-    password: '123456',
-    hidePwd: true, 
-    }
-])
+const emailList = ref<EmailConfig[]>([])
 
 const emailDialogVisible = ref(false)
 const emailTestDailogVisible=ref(false)
@@ -205,7 +127,7 @@ onMounted(()=>{
     .email-box{
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: flex-start;
         overflow-y: scroll;
     }
 }

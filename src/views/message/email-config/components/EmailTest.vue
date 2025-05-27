@@ -68,6 +68,8 @@ const connectFormRules = reactive({
 
 function handleClose(){
     emits('update:modelValue',false)
+    connectFormRef.value.resetFields()
+    connectFormRef.value.email=''
 }
 
 function sendEmail(){
@@ -76,7 +78,7 @@ function sendEmail(){
      if(valid){
       try{
        isLoading.value=true
-          await sendEmailApi({...props.emailConfig,...connectForm.value})
+          await sendEmailApi({...props.emailConfig,smtpPort:Number(props.emailConfig.smtpPort), ...connectForm.value,enableSsl:props.emailConfig.enableSsl=='1'?true:false})
          notify("发送成功！", { type: "success" });
           handleClose()
       }catch(error){
